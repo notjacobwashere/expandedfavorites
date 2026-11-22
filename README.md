@@ -6,6 +6,16 @@ Open **GIF → Favorites** to see both sources together, newest first. Click the
 
 ## Installation
 
+### Windows installer
+
+Download and run [ExpandedFavorites-Setup.exe](https://github.com/notjacobwashere/expandedfavorites/releases/latest/download/ExpandedFavorites-Setup.exe). Vencord must already be installed in the Windows Discord desktop app. The installer enables ExpandedFavorites and restarts any open supported Discord desktop clients. Closed clients stay closed.
+
+This installer supports the official Vencord 1.15.18 build at revision `ce9355e`, plus existing builds that already contain ExpandedFavorites. It checks the installed files before replacing an official build. Use the custom-build steps below for other releases or for a build that includes other userplugins.
+
+On a stock install, the installer saves the original Vencord build and settings in the backup folder it prints. It turns off Vencord's automatic updates because replacing the bundled files with a stock update removes the plugin. Update notifications stay enabled. To restore the original installation, close Discord, restore the backup's `dist` and `settings.json` to their original locations under `%APPDATA%\Vencord`, and reopen Discord. The installer is unsigned.
+
+### Custom build
+
 Use the Windows Discord desktop app with a [custom Vencord build](https://docs.vencord.dev/installing/custom-build/). The plugin integrates with Discord's GIF picker internals, so a Discord update can require a plugin update.
 
 Version 1.0.0 was verified on Discord Canary 1.0.1353 with Vencord 1.15.17. The live check covered opening the picker, persisting and displaying a local favorite across reload, and unstarring it. The capacity and slot-recovery paths were tested with fixtures for Canary's native favorite action.
@@ -34,3 +44,7 @@ Discord's existing favorites keep their displayed order when first recorded. Acc
 Disable ExpandedFavorites and restart Discord. To remove the plugin from your custom build, remove its directory from `src/userplugins`, then rebuild and reinject. Keep a copy of `favorites.txt` if you want to restore your local list after reinstalling. Removing the file erases the local list.
 
 Licensed under GPL-3.0-or-later.
+
+## Building the installer
+
+The setup executable includes Vencord from [source revision ce9355e](https://github.com/Vendicated/Vencord/tree/ce9355e9a93e369c7295fa162ad563f7f97b1ff7), built with this userplugin using `pnpm build --standalone --dev`. Download `patcher.js`, `preload.js`, `renderer.js`, and `renderer.css` from [the matching official build](https://github.com/Vencord/builds/tree/67f791f8d6a30dfe3be491395aa58dd65840fe6a) into a separate stock directory. Run `installer\Build.ps1 -StockDirectory <stock> -BuildDirectory <Vencord-dist> -OutputFile ExpandedFavorites-Setup.exe` on 64-bit Windows to package the executable.
